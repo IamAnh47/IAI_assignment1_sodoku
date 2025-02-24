@@ -1,5 +1,5 @@
 from solve import Solver as DFSSolver
-from solve_mrv import MRVSolver   # Sử dụng thuật toán MRV thay cho Min-Conflicts
+from solve_mrv import MRVSolver
 from board import Board
 import time
 import tracemalloc
