@@ -15,7 +15,6 @@ def is_valid(board, row, col, num):
 
 def generate_complete_board():
     board = [[0 for _ in range(9)] for _ in range(9)]
-
     def fill():
         for i in range(9):
             for j in range(9):
@@ -30,7 +29,6 @@ def generate_complete_board():
                             board[i][j] = 0
                     return False
         return True
-
     fill()
     return board
 
@@ -62,7 +60,7 @@ def generate_puzzle(level):
 
 def generate_input(level):
     """
-    Sinh ra puzzle ngẫu nhiên theo cấp độ, ghi vào file input/<level>_gen.txt (chữ thường).
+    Sinh ra puzzle ngẫu nhiên theo cấp độ, ghi vào file input/<level>_gen.txt.
     Trả về puzzle và solution.
     """
     level_names = {1: "basic", 2: "easy", 3: "intermediate",

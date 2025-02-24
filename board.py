@@ -1,12 +1,11 @@
 import os
 import time
-import tracemalloc
 
 class Cell:
     def __init__(self, value):
         self.value = value
         if value != 0:
-            self.is_fixed = True  # ô đã được điền
+            self.is_fixed = True  # Ô đã được điền
         else:
             self.is_fixed = False
 
@@ -22,7 +21,7 @@ class Cell:
 
 class Board:
     def __init__(self, grid_init):
-        # Tạo một lưới 9x9 gồm các cell
+        # Tạo một lưới 9x9 gồm các Cell
         self.grid = [[Cell(grid_init[row][col]) for col in range(9)] for row in range(9)]
 
     def is_valid_cell(self, row, col, value):
@@ -31,13 +30,13 @@ class Board:
             if self.grid[row][i].value == value or self.grid[i][col].value == value:
                 return False
 
-        # Kiểm tra ô vuông 3x3
+        # Kiểm tra khối 3x3
         start_row, start_col = 3 * (row // 3), 3 * (col // 3)
         for i in range(3):
             for j in range(3):
                 if self.grid[start_row + i][start_col + j].value == value:
                     return False
-        return True  # valid
+        return True
 
     def find_empty_cell(self):
         for row in range(9):
@@ -46,7 +45,6 @@ class Board:
                     return (row, col)
         return None
 
-    # DRAW BOARD
     def color_text(self, text, color):
         COLORS = {
             "red": "\033[31m",
@@ -66,7 +64,8 @@ class Board:
                 if j % 3 == 0:
                     print("|", end=" ")
                 if j != 9:
-                    ctx = self.grid[i][j].get_value() if self.grid[i][j].get_value() != 0 else "."
+                    cell_value = self.grid[i][j].get_value()
+                    ctx = cell_value if cell_value != 0 else "."
                     if i == row and j == col:
                         print(self.color_text(ctx, 'red'), end=" ")
                     elif self.grid[i][j].isfixed():

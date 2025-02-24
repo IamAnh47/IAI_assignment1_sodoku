@@ -1,11 +1,10 @@
 from solve import Solver as DFSSolver
-from solve_sa import SASolver
+from solve_mrv import MRVSolver   # Sử dụng thuật toán MRV thay cho Min-Conflicts
 from board import Board
 import time
 import tracemalloc
 import os
 import gen_input
-
 
 def read_sudoku(filename):
     """
@@ -21,7 +20,6 @@ def read_sudoku(filename):
                 sudoku.append(row)
     return sudoku
 
-
 def write_board_to_file(board, filename):
     """
     Ghi ma trận Sudoku (lấy giá trị từ các cell) vào file.
@@ -30,7 +28,6 @@ def write_board_to_file(board, filename):
         for i in range(9):
             line = " ".join(str(board[i][j].get_value()) for j in range(9))
             f.write(line + "\n")
-
 
 def main():
     level_files = ("basic.txt", "easy.txt", "intermediate.txt", "advance.txt", "extreme.txt", "evil.txt")
@@ -73,7 +70,7 @@ def main():
     while True:
         print("\nChọn giải thuật để giải bài toán sudoku:")
         print("  1. DFS")
-        print("  2. Min-Conflicts")
+        print("  2. MRV")
         algo = int(input("Lựa chọn: "))
         if algo in (1, 2):
             break
@@ -85,15 +82,19 @@ def main():
         if algo == 1:
             solver = DFSSolver(board_obj)
             if solver.solve_dfs(drawFlag=False):
-                print("Giải thành công bằng DFS")
+                print("Giải thành công bằng DFS!")
             else:
                 print("Giải không thành công với DFS")
         elif algo == 2:
-            solver = SASolver(board_obj)
-            if solver.solve_sa(drawFlag=False):
-                print("Giải thành công bằng Min-Conflicts")
+            solver = MRVSolver(board_obj)
+            if solver.solve_mrv(drawFlag=False):
+                print("Giải thành công bằng MRV!")
             else:
-                print("Giải không thành công với Min-Conflicts")
+                print("Giải không thành công với MRV")
+
+        # In kết quả ra màn hình (bảng Sudoku đã được giải)
+        print("\nKết quả cuối cùng:")
+        board_obj.draw_grid()
 
         snapshot = tracemalloc.take_snapshot()
         top_stats = snapshot.statistics('lineno')
@@ -118,8 +119,8 @@ def main():
                 solver_step = DFSSolver(board_step)
                 solver_step.solve_dfs(drawFlag=True)
             elif algo == 2:
-                solver_step = SASolver(board_step)
-                solver_step.solve_sa(drawFlag=True)
+                solver_step = MRVSolver(board_step)
+                solver_step.solve_mrv(drawFlag=True)
             print(f"Thời gian: {time_run:.2f} s")
             print(f"Bộ nhớ: {memory_alloc:.2f} KB")
         else:
@@ -127,7 +128,6 @@ def main():
 
     except Exception as e:
         print(f"Error: {e}")
-
 
 if __name__ == "__main__":
     main()
